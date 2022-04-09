@@ -1,0 +1,112 @@
+
+Sub CreateFiles()
+
+'Set rng as the range between A1 and A4 (Or whatever your control ID range is)
+Dim rng As Range: Set rng = Range("A1:A4")
+
+'Set short description range
+
+'Set c as cell
+Dim c As Range:
+
+'For each cell (c) in the range (in other words, for each record/control in the table)
+For Each c In rng
+
+    'Set sfolder variable as source folder
+    Dim sfolder As String
+
+    'Set dfolder variable as destination folder
+    Dim dfolder As String
+    
+    'Rename File
+    'Find Control ID
+    Cid = WorksheetFunction.Lookup(c.Value, rng, rng)
+    'Find control description'
+    Ccd = WorksheetFunction.Lookup(c.Value, rng, rng.Offset(0, 1))
+    'name is just control id + short description
+    name = Cid & " " & Ccd
+
+    'Set source folder address/path
+    'For Mac users, try using ":" instead of "/"
+    sfolder = "Users:jayesongao:Desktop:VBA Project:Input"
+
+    'Set destination folder address
+    dfolder = "Users:jayesongao:Desktop:VBA Project:Output"
+
+    'FileCopy method takes source and destination
+    'Concatenate source and destination paths to file names
+    FileCopy sfolder & ":template.xlsx", dfolder & ":" & name & ".xlsx"
+
+Next
+
+MsgBox "Your files have been created"
+UpdateFiles
+
+End Sub
+
+Sub UpdateFiles()
+Dim MyFolder As String 'Path collected from the folder picker dialog
+Dim MyFile As String 'Filename obtained by DIR function
+Dim wbk As Workbook 'Used to loop through each workbook
+
+'MyFolder = "Users:jayesongao:Desktop:VBA Project:Output"
+MyFolder = "/Users/jayesongao/Desktop/VBA Project/Output/"
+
+MyExtension = "*.xlsx"
+
+MyFile = Dir(MyFolder & MyFile)
+
+Do While MyFile <> ""
+   'Opens the file and assigns to the wbk variable for future use
+   Set wbk = Workbooks.Open(FileName:=MyFolder & MyFile)
+   
+   'Replace the line below with the statements you would want your macro to perform
+    'row finder of control workpaper in table
+    Dim name As String
+    Dim delimit() As String
+    Dim controlid As String
+    
+    name = ActiveWorkbook.name
+    delimit() = Split(name, " ")
+    controlid = delimit(0)
+    
+    'Set range of control summary table
+    Dim sum_rng As Range: Set sum_rng = Range("A5:A14")
+    
+    'Set a as cell
+    Dim field As Range:
+    
+    'For each field in workpaper, find and return [column index] in table
+    For Each field In sum_rng
+        Dim col_rng As Range
+        Dim cell As Range
+        Dim search As String
+        
+        'find workpaper field in table header
+        Set col_rng = ThisWorkbook.Sheets(1).Rows(1)
+        search = field.Value
+        Set cell = col_rng.Find(What:=search, LookIn:=xlFormulas, LookAt:=xlWhole, MatchCase:=False)
+        
+        
+        'Match controlid row in table'
+        Row = WorksheetFunction.Match(controlid, ThisWorkbook.Sheets(1).Range("A:A"))
+        'Match field column in row'
+        
+        'if cell is found, return "hi"
+        If Not cell Is Nothing Then
+            Col = cell.Column
+            'reference the table index of (match the column that field is in, match the row that the controlid is in)
+            field.Offset(0, 1).Value = ThisWorkbook.Sheets(1).Cells(Row, Col)
+        Else
+            field.Offset(0, 1).Value = ""
+        End If
+
+    Next
+    
+    wbk.Close savechanges:=True
+    MyFile = Dir 'DIR gets the next file in the folder
+Loop
+
+MsgBox "Your leadsheets have been updated"
+
+End Sub
