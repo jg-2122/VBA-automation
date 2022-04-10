@@ -1,8 +1,9 @@
 
+
 Sub CreateFiles()
 
-'Set rng as the range between A1 and A4 (Or whatever your control ID range is)
-Dim rng As Range: Set rng = Range("A1:A4")
+'Set rng as the range between A2 and A31 (Or whatever your control ID range is)
+Dim rng As Range: Set rng = Range("A2:A31")
 
 'Set short description range
 
@@ -20,9 +21,11 @@ For Each c In rng
     
     'Rename File
     'Find Control ID
-    Cid = WorksheetFunction.Lookup(c.Value, rng, rng)
+    'Cid = WorksheetFunction.Lookup(c.Value, rng, rng)
+    Cid = c.Value
     'Find control description'
-    Ccd = WorksheetFunction.Lookup(c.Value, rng, rng.Offset(0, 1))
+    'Ccd = WorksheetFunction.Lookup(c.Value, rng, rng.Offset(0, 1))
+    Ccd = c.Offset(0, 1).Value
     'name is just control id + short description
     name = Cid & " " & Ccd
 
@@ -49,7 +52,7 @@ Dim MyFolder As String 'Path collected from the folder picker dialog
 Dim MyFile As String 'Filename obtained by DIR function
 Dim wbk As Workbook 'Used to loop through each workbook
 
-'MyFolder = "Users:jayesongao:Desktop:VBA Project:Output"
+'Set my folder location
 MyFolder = "/Users/jayesongao/Desktop/VBA Project/Output/"
 
 MyExtension = "*.xlsx"
@@ -57,10 +60,10 @@ MyExtension = "*.xlsx"
 MyFile = Dir(MyFolder & MyFile)
 
 Do While MyFile <> ""
+
    'Opens the file and assigns to the wbk variable for future use
    Set wbk = Workbooks.Open(FileName:=MyFolder & MyFile)
    
-   'Replace the line below with the statements you would want your macro to perform
     'row finder of control workpaper in table
     Dim name As String
     Dim delimit() As String
@@ -70,8 +73,11 @@ Do While MyFile <> ""
     delimit() = Split(name, " ")
     controlid = delimit(0)
     
+    'Match controlid row in table'
+    Row = WorksheetFunction.Match(controlid, ThisWorkbook.Sheets(1).Range("A:A"))
+    
     'Set range of control summary table
-    Dim sum_rng As Range: Set sum_rng = Range("A5:A14")
+    Dim sum_rng As Range: Set sum_rng = Range("A5:A15")
     
     'Set a as cell
     Dim field As Range:
@@ -89,8 +95,9 @@ Do While MyFile <> ""
         
         
         'Match controlid row in table'
-        Row = WorksheetFunction.Match(controlid, ThisWorkbook.Sheets(1).Range("A:A"))
-        'Match field column in row'
+        'Row = WorksheetFunction.Match(controlid, ThisWorkbook.Sheets(1).Range("A:A"))
+        
+        'Match field column in table'
         
         'if cell is found, return "hi"
         If Not cell Is Nothing Then
