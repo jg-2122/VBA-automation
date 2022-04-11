@@ -76,8 +76,8 @@ Do While MyFile <> ""
     'Match controlid row in table'
     Row = WorksheetFunction.Match(controlid, ThisWorkbook.Sheets(1).Range("A:A")) *<-- can be expanded to use FileDialog/InputBox objects*
     
-    'Set range of control summary table
-    Dim sum_rng As Range: Set sum_rng = Range("A5:A15") *<-- can be expanded to use FileDialog/InputBox objects*
+    'Set range of control leadsheet cells to loop through
+    Dim sum_rng As Range: Set sum_rng = Range("A1:I22") *<-- can be expanded to use FileDialog/InputBox objects*
     
     'Set a as cell
     Dim field As Range:
