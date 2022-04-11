@@ -3,7 +3,7 @@
 Sub CreateFiles()
 
 'Set rng as the range between A2 and A31 (Or whatever your control ID range is)
-Dim rng As Range: Set rng = Range("A2:A31")
+Dim rng As Range: Set rng = Range("A2:A31") *<-- can be expanded to use FileDialog/InputBox objects*
 
 'Set short description range
 
@@ -27,14 +27,14 @@ For Each c In rng
     'Ccd = WorksheetFunction.Lookup(c.Value, rng, rng.Offset(0, 1))
     Ccd = c.Offset(0, 1).Value
     'name is just control id + short description
-    name = Cid & " " & Ccd
+    name = Cid & " " & Ccd *<-- you can modify the naming convention*
 
     'Set source folder address/path
     'For Mac users, try using ":" instead of "/"
-    sfolder = "Users:jayesongao:Desktop:VBA Project:Input"
+    sfolder = "Users:jayesongao:Desktop:VBA Project:Input" *<-- can be expanded to use FileDialog/InputBox objects*
 
     'Set destination folder address
-    dfolder = "Users:jayesongao:Desktop:VBA Project:Output"
+    dfolder = "Users:jayesongao:Desktop:VBA Project:Output" *<-- can be expanded to use FileDialog/InputBox objects*
 
     'FileCopy method takes source and destination
     'Concatenate source and destination paths to file names
@@ -53,11 +53,11 @@ Dim MyFile As String 'Filename obtained by DIR function
 Dim wbk As Workbook 'Used to loop through each workbook
 
 'Set my folder location
-MyFolder = "/Users/jayesongao/Desktop/VBA Project/Output/"
+MyFolder = "/Users/jayesongao/Desktop/VBA Project/Output/" *<-- can be expanded to use FileDialog/InputBox objects*
 
 MyExtension = "*.xlsx"
 
-MyFile = Dir(MyFolder & MyFile)
+MyFile = Dir(MyFolder & MyExtension)
 
 Do While MyFile <> ""
 
@@ -74,10 +74,10 @@ Do While MyFile <> ""
     controlid = delimit(0)
     
     'Match controlid row in table'
-    Row = WorksheetFunction.Match(controlid, ThisWorkbook.Sheets(1).Range("A:A"))
+    Row = WorksheetFunction.Match(controlid, ThisWorkbook.Sheets(1).Range("A:A")) *<-- can be expanded to use FileDialog/InputBox objects*
     
     'Set range of control summary table
-    Dim sum_rng As Range: Set sum_rng = Range("A5:A15")
+    Dim sum_rng As Range: Set sum_rng = Range("A5:A15") *<-- can be expanded to use FileDialog/InputBox objects*
     
     'Set a as cell
     Dim field As Range:
@@ -89,13 +89,13 @@ Do While MyFile <> ""
         Dim search As String
         
         'find workpaper field in table header
-        Set col_rng = ThisWorkbook.Sheets(1).Rows(1)
+        Set col_rng = ThisWorkbook.Sheets(1).Rows(1) *<-- Your table may not be in Sheet1 Row 1 so reconfigure this or expand to use FileDialog/InputBox objects*
         search = field.Value
         Set cell = col_rng.Find(What:=search, LookIn:=xlFormulas, LookAt:=xlWhole, MatchCase:=False)
         
         
         'Match controlid row in table'
-        'Row = WorksheetFunction.Match(controlid, ThisWorkbook.Sheets(1).Range("A:A"))
+        'Row = WorksheetFunction.Match(controlid, ThisWorkbook.Sheets(1).Range("A:A")) *<-- Your Control IDs may not be in Sheet1 Column A so reconfigure this or expand to use FileDialog/InputBox objects
         
         'Match field column in table'
         
