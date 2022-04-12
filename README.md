@@ -9,6 +9,8 @@ on how you want to implement this. The ranges are hardcoded at the moment but th
 can be replaced with FileDialog and InputBox options that provide a safe interface for a user to
 interact with instead of fudging with the code
 
+Could also be built in Python (easier syntax and expanded functionality), Alterx (low-code), etc
+
 The code requires more testing and definitely could use improvements - I was just playing around
 with VBA for fun and thought this would be a good use case for writing a VBA macro
 
