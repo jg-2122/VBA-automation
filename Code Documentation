@@ -23,7 +23,7 @@ Macro 2
 1. Loop through every workbook in Output folder until
   A. Delimit workbook name/title to retrieve the Control ID
   B. Define a "row" variable that returns the row index of where the Control ID is in the table workbook
-  C. Loop through every field in the Control Summary section in the active workpaper
+  C. Find fields on control summary sheet of the active workpaper workbook and loop through every field
     i) If field is found in the table header row of the table workbook (if field is found as a column in the table)
       a- Define a "column" variable that returns the column index of where the field is in the Excel table
       b- Populate the cell to the right of the field cell by indexing the row column
